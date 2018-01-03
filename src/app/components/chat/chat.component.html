@@ -1,0 +1,17 @@
+<div class="container">
+  <div class="nameInput">
+    <div class="messages-window">
+      <div *ngFor="let message of messages">
+        <p class="message">{{message}}</p>
+      </div>
+    </div>
+    <input type="text" [(ngModel)]="message" (keydown.enter)="sendMessage()">
+  </div>
+</div>
+<div class="container">
+  <div class="nameInput">
+      <div *ngFor="let user of connectedUsers">
+        <p class="message">{{user}}</p>
+      </div>
+  </div>
+</div>
