@@ -15,11 +15,10 @@ io.on('connection', (socket) => {
     socket.emit('connectedUsers', connectedUsers);
   });
 
-  console.log('USER CONNECTED');
-
   socket.on('disconnect', function(){
-    console.log('USER DISCONNECTED');
-
+    var index = connectedUsers.indexOf(nameUser);
+    connectedUsers.splice(index ,1);
+    socket.broadcast.emit('disconnectOfUser', {index:index, name:nameUser});
   });
 
   socket.on('add-message', (message) => {

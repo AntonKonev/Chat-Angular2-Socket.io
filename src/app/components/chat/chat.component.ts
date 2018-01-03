@@ -8,9 +8,12 @@ import { ActivatedRoute } from '@angular/router'
 })
 export class ChatComponent implements OnInit {
   public nameOfUser: string;
-  public connectedUsers = [];
+  public connectedUsers;
   public messages = [];
-  public connection;
+  public gettingMessages;
+  public gettingNewUser;
+  public allUsers;
+  public disconectUser;
   public message;
 
   constructor(private chatService: ChatServiceService, private activatedRoute: ActivatedRoute) {
@@ -23,24 +26,26 @@ export class ChatComponent implements OnInit {
 
   ngOnInit() {
     this.nameOfUser = this.activatedRoute.snapshot.params["name"];
-
-    this.connection = this.chatService.getMessages(this.nameOfUser).subscribe(data => {
-      if(data['type'] === 'new-user'){
-        this.messages.push(`New User ${data['name']} has connected to Chat!`)
-        console.log(this.chatService.getConnectedUsers());
-        this.connectedUsers = this.chatService.getConnectedUsers();
-      } else {
-        this.messages.push(`${data['name']}: ${data['text']}`);
-      }
-      console.log(this.chatService.getConnectedUsers());
+    this.chatService.intitialSocket(this.nameOfUser);
+    this.gettingNewUser = this.chatService.getNewUser().subscribe(data => {
+      this.connectedUsers = data['connectedUsers'];
+      this.messages.push(`New User ${data['name']} has connected to Chat!`);
     });
-    this.chatService.socket.on('connectedUsers', (data) => {
-         console.log(data);
-         this.connectedUsers = data;
-       });
+    this.gettingMessages = this.chatService.getMessages().subscribe(data => {
+      this.messages.push(`${data['name']}: ${data['text']}`);
+    });
+    this.allUsers = this.chatService.getUsers().subscribe(data => {
+      this.connectedUsers = data;
+    });
+    this.disconectUser = this.chatService.disconectUser().subscribe(data => {
+      this.messages.push(`User ${data} has left the Chat!`)
+    });
   }
 
   ngOnDestroy() {
-    this.connection.unsubscribe();
+    this.gettingMessages.unsubscribe();
+    this.gettingNewUser.unsubscribe();
+    this.disconectUser.unsubscribe();
+    this.allUsers.unsubscribe();
   }
 }
