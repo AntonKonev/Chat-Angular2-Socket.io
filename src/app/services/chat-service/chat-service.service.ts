@@ -1,10 +1,15 @@
 import { Observable } from 'rxjs/Observable';
 import * as io from 'socket.io-client';
+import { Router } from '@angular/router'
+import { Injectable } from "@angular/core";
 
+@Injectable()
 export class ChatServiceService {
   private url = 'http://localhost:3000';
   private connectedUsers = [];
   public socket;
+
+  constructor(public router: Router){}
 
   sendMessage(message) {
     this.socket.emit('add-message', message);
@@ -27,6 +32,7 @@ export class ChatServiceService {
         this.connectedUsers = userName.connectedUsers;
         observer.next(userName);
       });
+
     });
     return observable;
   }
@@ -54,10 +60,24 @@ export class ChatServiceService {
     return observable;
   }
 
-  public intitialSocket(name:string): void{
-    this.socket = io(this.url);
+  public authorization(name:string): void{
     this.socket.emit('auth', name);
-    this.socket.on
   }
+
+  public intitialSocket(): void{
+    this.socket = io(this.url);
+  }
+
+  public chekingOfName (name: string) {
+    let observable = new Observable(observer => {
+      this.socket.on('checkedName', (data) => {
+        observer.next(data);
+      });
+      this.socket.emit('checkName', name);
+
+    });
+    return observable;
+  }
+
 
 }

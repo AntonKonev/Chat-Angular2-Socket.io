@@ -1,7 +1,7 @@
 <div class="container">
   <div class="nameInput">
     <p>Enter your name</p>
-    <input type="text" [(ngModel)]="nameOfuser" (keydown.enter)="redirectToChat()">
-    <button (click)="redirectToChat()">Login</button>
+    <input type="text" [(ngModel)]="nameOfuser" (keydown.enter)="checkingOfName()">
+    <button (click)="checkingOfName()">Login</button>
   </div>
 </div>

@@ -6,12 +6,13 @@ import { AppComponent } from './app.component';
 import { UserRegistrationComponent } from './components/user-registration/user-registration.component';
 import { ChatComponent } from './components/chat/chat.component';
 import { ChatServiceService } from "./services/chat-service/chat-service.service";
+import { AuthServiceService } from "./services/auth-service/auth-service.service";
 import { FormsModule } from '@angular/forms'
 
 
 export const appRoutes: Routes =[
   {path: '', component: UserRegistrationComponent },
-  {path: 'chat/:name', component: ChatComponent }
+  {path: 'chat/:name', component: ChatComponent, canActivate: [AuthServiceService]}
 ];
 
 
@@ -26,7 +27,7 @@ export const appRoutes: Routes =[
     FormsModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [ChatServiceService],
+  providers: [ChatServiceService, AuthServiceService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

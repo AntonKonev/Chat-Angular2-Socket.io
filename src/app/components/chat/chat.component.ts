@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ChatServiceService } from '../../services/chat-service/chat-service.service'
-import { ActivatedRoute } from '@angular/router'
+import { Router, ActivatedRoute } from '@angular/router'
+
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
@@ -16,7 +17,9 @@ export class ChatComponent implements OnInit {
   public disconectUser;
   public message;
 
-  constructor(private chatService: ChatServiceService, private activatedRoute: ActivatedRoute) {
+  constructor( private chatService: ChatServiceService,
+               private activatedRoute: ActivatedRoute,
+               private router: Router ) {
   }
 
   public sendMessage(): void {
@@ -24,9 +27,12 @@ export class ChatComponent implements OnInit {
     this.message = '';
   }
 
+
   ngOnInit() {
     this.nameOfUser = this.activatedRoute.snapshot.params["name"];
-    this.chatService.intitialSocket(this.nameOfUser);
+
+    this.chatService.authorization(this.nameOfUser);
+
     this.gettingNewUser = this.chatService.getNewUser().subscribe(data => {
       this.connectedUsers = data['connectedUsers'];
       this.messages.push(`New User ${data['name']} has connected to Chat!`);

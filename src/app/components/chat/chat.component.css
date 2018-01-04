@@ -8,7 +8,7 @@
   display: flex;
   flex-direction: column;
   align-content: center;
-  width: 350px;
+  width: 500px;
   border-radius: 20px;
   border: 3px solid red;
   margin: 10px;
@@ -19,17 +19,30 @@ p {
 }
 
 input {
+  font-family: Arial;
+  font-size: 16px;
+  font-weight: 200;
   margin: 10px;
 }
 
 .messages-window {
   border: 2px solid black;
+  border-radius: 20px;
   margin: 10px;
   height: 500px;
   overflow-x: hidden;
 }
 
 .message {
-  width: 326px;
   word-break: break-all;
+  font-family: Arial;
+  font-size: 16px;
+  font-weight: 200;
+}
+
+.connectedUsers {
+  text-align: center;
+  font-family: Arial;
+  font-size: 24px;
+  font-weight: 500;
 }
