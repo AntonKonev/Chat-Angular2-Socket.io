@@ -7,7 +7,6 @@ let io = require('socket.io')(http);
 let connectedUsers = [];
 
 io.on('connection', (socket) => {
-  console.log('connection');
   var nameUser;
   socket.on('auth', (name) => {
     nameUser = name;
@@ -17,12 +16,11 @@ io.on('connection', (socket) => {
   });
 
   socket.on('disconnect', function(){
-    var index = connectedUsers.indexOf(nameUser);
-    connectedUsers.splice(index ,1);
-    console.log(index);
-    console.log("disconecrt");
-    socket.broadcast.emit('disconnectOfUser', {index:index, name:nameUser});
-    socket.emit('disconnect1');
+    if(nameUser !== undefined) {
+      var index = connectedUsers.indexOf(nameUser);
+      connectedUsers.splice(index, 1);
+      socket.broadcast.emit('disconnectOfUser', {index: index, name: nameUser});
+    }
   });
 
   socket.on('add-message', (message) => {
@@ -34,7 +32,5 @@ io.on('connection', (socket) => {
   })
 });
 
-
 http.listen(3000, () => {
-  console.log('started on port 3000');
 });

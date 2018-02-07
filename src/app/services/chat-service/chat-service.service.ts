@@ -1,6 +1,5 @@
 import { Observable } from 'rxjs/Observable';
 import * as io from 'socket.io-client';
-import { Router } from '@angular/router'
 import { Injectable } from "@angular/core";
 
 @Injectable()
@@ -9,7 +8,7 @@ export class ChatServiceService {
   private connectedUsers = [];
   public socket;
 
-  constructor(public router: Router){}
+  constructor(){}
 
   sendMessage(message) {
     this.socket.emit('add-message', message);
@@ -18,7 +17,6 @@ export class ChatServiceService {
 
   getMessages() {
     let observable = new Observable(observer => {
-
       this.socket.on('message', (data) => {
         observer.next(data);
       });
@@ -68,13 +66,11 @@ export class ChatServiceService {
     this.socket = io(this.url);
   }
 
-  public chekingOfName (name: string) {
+  public chekingOfName () {
     let observable = new Observable(observer => {
       this.socket.on('checkedName', (data) => {
         observer.next(data);
       });
-      this.socket.emit('checkName', name);
-
     });
     return observable;
   }

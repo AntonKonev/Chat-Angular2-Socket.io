@@ -1,7 +1,12 @@
 <div class="container">
-  <div class="nameInput">
+  <form class="nameInput" [formGroup]="loginForm">
     <p>Enter your name</p>
-    <input type="text" [(ngModel)]="nameOfuser" (keydown.enter)="checkingOfName()">
-    <button (click)="checkingOfName()">Login</button>
-  </div>
+    <input type="text" formControlName="login" [(ngModel)]="nameOfuser" (keydown.enter)="checkName()">
+    <div *ngIf="flag" class="alert">
+      <p *ngFor="let error of formErrors.login">
+        {{error}}
+      </p>
+    </div>
+    <button [disabled]="loginForm.invalid" (click)="checkName()">Login</button>
+  </form>
 </div>

@@ -7,7 +7,7 @@ import { UserRegistrationComponent } from './components/user-registration/user-r
 import { ChatComponent } from './components/chat/chat.component';
 import { ChatServiceService } from "./services/chat-service/chat-service.service";
 import { AuthServiceService } from "./services/auth-service/auth-service.service";
-import { FormsModule } from '@angular/forms'
+import { ReactiveFormsModule, FormsModule } from '@angular/forms'
 
 
 export const appRoutes: Routes =[
@@ -24,6 +24,7 @@ export const appRoutes: Routes =[
   ],
   imports: [
     BrowserModule,
+    ReactiveFormsModule,
     FormsModule,
     RouterModule.forRoot(appRoutes)
   ],
